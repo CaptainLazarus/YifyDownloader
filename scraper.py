@@ -1,21 +1,48 @@
-from bs4 import BeautifulSoup
-
-#Currently Local
-html_doc = """
-<html><head><title>The Dormouse's story</title></head>
-<body>
-<p class="title"><b>The Dormouse's story</b></p>
-
-<p class="story">Once upon a time there were three little sisters; and their names were
-<a href="http://example.com/elsie" class="sister" id="link1">Elsie</a>,
-<a href="http://example.com/lacie" class="sister" id="link2">Lacie</a> and
-<a href="http://example.com/tillie" class="sister" id="link3">Tillie</a>;
-and they lived at the bottom of a well.</p>
-
-<p class="story">...</p>
-"""
+import requests
+from bs4 import BeautifulSoup , SoupStrainer
+import re
 
 
-soup = BeautifulSoup(html_doc , 'html.parser')
+url = ["yts.am"]
+types = []
+quality = []
+details = []
 
-print(soup.prettify())
+#Movie Details
+class TorrentInfo:
+    pass
+
+#Main Class
+class movie:
+    def __init__(self , name , year):
+        self.name = name
+        self.year = year
+    def find(self):
+        for i in url:
+            i = "https://"+i+"/movie/"+self.name+"-"+self.year
+            webpage = requests.get(i)
+
+            if webpage.status_code == 200:
+                print("\nOpened " , i)
+                print()
+                
+                soup1 = SoupStrainer(class_="modal-torrent")
+                soup = BeautifulSoup(webpage.text , "html.parser" , parse_only = soup1)
+                details = soup.find_all(class_="quality-size")
+                links = []
+                quality = details[1::2]
+                types = details[0::2]
+                for q in soup.findAll(class_="magnet-download download-torrent magnet"):
+                    links.append(q.get("href"))
+                return(links[0])
+            else:
+                print("This webpage doesn't work: " , i)
+
+#Basic Details
+film_name = list(map(str.lower , input("Enter Name of Movie: ").strip().split(' ')))
+film_year = input("Enter Year of Movie: ")
+
+film_name = '-'.join(film_name)
+
+m1 = movie(film_name , film_year)
+requests.get(m1.find())
