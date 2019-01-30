@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup , SoupStrainer
 import re
-
+import sys , subprocess
 
 url = ["yts.am"]
 types = []
@@ -34,18 +34,16 @@ class movie:
                 types = details[0::2]
                 for q in soup.findAll(class_="magnet-download download-torrent magnet"):
                     links.append(q.get("href"))
-
-                for x in types: 
-                    print(x)
-                    print() 
-                for x in quality: 
-                    print(x)
-                    print()
-                for x in links: 
-                    print(x)
-                    print() 
-                break
+                quality = [x.contents[0] for x in quality]
+                types = [x.contents[0] for x in types]
                 
+
+                for x,y,z in zip(types,quality , links): 
+                    print(x , " " , y , "\n\n" , z , "\n\n") 
+                this_link = int(input("Which Link? Indexwise"))
+                subprocess.Popen(['xdg-open', links[this_link]],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                break
             else:
                 print("This webpage doesn't work: " , i)
 
