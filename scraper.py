@@ -40,12 +40,12 @@ class movie:
 
                 for x,y,z in zip(types,quality , links): 
                     print(x , " " , y , "\n\n" , z , "\n\n") 
-                this_link = int(input("Which Link? Indexwise"))
+                this_link = int(input("Which Link? Indexwise: "))
                 subprocess.Popen(['xdg-open', links[this_link]],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 break
             else:
-                print("This webpage doesn't work: " , i)
+                print("This webpage doesn't exist: " , i)
 
 #Basic Details
 film_name = list(map(str.lower , input("Enter Name of Movie: ").strip().split(' ')))
