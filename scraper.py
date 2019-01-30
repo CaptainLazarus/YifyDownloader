@@ -3,14 +3,11 @@ from bs4 import BeautifulSoup , SoupStrainer
 import re
 import sys , subprocess
 
-url = ["yts.am"]
+url = ["yts.am" , "yts.unblocked.llc" , "yts.pm"]
 types = []
 quality = []
 details = []
 
-#Movie Details
-class TorrentInfo:
-    pass
 
 #Main Class
 class movie:
@@ -37,10 +34,19 @@ class movie:
                 quality = [x.contents[0] for x in quality]
                 types = [x.contents[0] for x in types]
                 
+                k = 0
 
-                for x,y,z in zip(types,quality , links): 
-                    print(x , " " , y , "\n\n" , z , "\n\n") 
+                #Uncomment to also get corresponding links
+                # for k,x,y,z in zip(range(len(links)) , types,quality , links): 
+                #     print(k , " " , x , " " , y , "\n\n" , z , "\n\n") 
+                # this_link = int(input("Which Link? Indexwise: "))
+                
+                #Comment this and uncommment above if you want the links
+                for k,x,y in zip(range(len(links)) , types , quality): 
+                    print(k , " " , x , " " , y , "\n\n") 
                 this_link = int(input("Which Link? Indexwise: "))
+                
+
                 subprocess.Popen(['xdg-open', links[this_link]],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 break
