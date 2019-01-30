@@ -34,7 +34,18 @@ class movie:
                 types = details[0::2]
                 for q in soup.findAll(class_="magnet-download download-torrent magnet"):
                     links.append(q.get("href"))
-                return(links[0])
+
+                for x in types: 
+                    print(x)
+                    print() 
+                for x in quality: 
+                    print(x)
+                    print()
+                for x in links: 
+                    print(x)
+                    print() 
+                break
+                
             else:
                 print("This webpage doesn't work: " , i)
 
@@ -45,4 +56,4 @@ film_year = input("Enter Year of Movie: ")
 film_name = '-'.join(film_name)
 
 m1 = movie(film_name , film_year)
-requests.get(m1.find())
+m1.find()
